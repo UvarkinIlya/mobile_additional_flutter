@@ -1,0 +1,40 @@
+{
+  "rest": [
+    {
+      "url": "http://localhost:8080/users",
+      "method": "GET",
+      "example_body": {}
+    },
+    {
+      "url": "http://localhost:8080/user",
+      "method": "PUT",
+      "example_body": {
+        "name": "admin",
+        "password": "admin"
+      }
+    },
+    {
+      "url": "http://localhost:8080/user",
+      "method": "GET",
+      "example_body": {
+        "name": "admin"
+      }
+    },
+    {
+      "url": "http://localhost:8080/user",
+      "method": "PUT",
+      "example_body": {
+        "name": "admin"
+      }
+    },
+    {
+      "url": "http://localhost:8080/user",
+      "method": "POST",
+      "example_body": {
+        "id": 9,
+        "name": "admin",
+        "password": "test"
+      }
+    }
+  ]
+}
