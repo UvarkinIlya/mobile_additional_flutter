@@ -59,11 +59,11 @@ class Body{
 
   @override
   String toString() {
-    return '{\n"id": "$id",\n "name": "$name",\n "password": "$password"\n}\n';
+    return '{\n"id": $id,\n "name": "$name",\n "password": "$password"\n}\n';
    }
 
   String getParams(){
-    return '?${id == null ? "" : "id=$id&"}${name == null ? "" : "id=$name&"}${password == null ? "" : "id=$password&"}';
+    return '?${id == null ? "" : "id=$id&"}${name == null ? "" : "name=$name&"}${password == null ? "" : "password=$password&"}';
   }
 
   Map <String, String> postParams(){
@@ -77,7 +77,7 @@ class Body{
     }
 
     if (password != null) {
-      map["password"] = name.toString();
+      map["password"] = password.toString();
     }
 
     return map;
@@ -148,21 +148,44 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: (){
                       switch(api[index].method){
                         case "GET":{
-                          http.get(Uri.parse(api[index].url+api[index].body.getParams())).then((response) {
+                          var getParams = Body.fromJson(jsonDecode(controllers[index].text)).getParams();
+                          http.get(Uri.parse(api[index].url+getParams)).then((response) {
                             api[index].response = Response(statusCode: response.statusCode, body: response.body);
                             setState(() {});
                           });
                         }
                         break;
                         case "POST":{
-                          http.post(Uri.parse(api[index].url), body: api[index].body.postParams()).then((response) {
+                          var postParams = Body.fromJson(jsonDecode(controllers[index].text)).postParams();
+                          http.post(Uri.parse(api[index].url),
+                              headers: <String, String>{
+                                'Content-Type': 'application/json; charset=UTF-8',
+                              },
+                              body: jsonEncode(postParams)).then((response) {
                             api[index].response = Response(statusCode: response.statusCode, body: response.body);
                             setState(() {});
                           });
                         }
                         break;
                         case "PUT":{
-                          http.put(Uri.parse(api[index].url), body: api[index].body.postParams()).then((response) {
+                          var postParams = Body.fromJson(jsonDecode(controllers[index].text)).postParams();
+                          http.put(Uri.parse(api[index].url),
+                              headers: <String, String>{
+                                'Content-Type': 'application/json; charset=UTF-8',
+                              },
+                              body: jsonEncode(postParams)).then((response) {
+                            api[index].response = Response(statusCode: response.statusCode, body: response.body);
+                            setState(() {});
+                          });
+                        }
+                        break;
+                        case "DELETE":{
+                          var postParams = Body.fromJson(jsonDecode(controllers[index].text)).postParams();
+                          http.delete(Uri.parse(api[index].url),
+                              headers: <String, String>{
+                                'Content-Type': 'application/json; charset=UTF-8',
+                              },
+                              body: jsonEncode(postParams)).then((response) {
                             api[index].response = Response(statusCode: response.statusCode, body: response.body);
                             setState(() {});
                           });
